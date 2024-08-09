@@ -27,3 +27,6 @@ dist-ssr
 .env
 
 package-lock.json
+
+# Api Server
+server.js

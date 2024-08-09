@@ -1,14 +1,64 @@
 import { LinkForgotMyPassword } from "./components/links"
-import { InputEmail, InputPassword } from "./components/inputs";
+import { InputEmail, InputPassword } from "./components/inputsAutentication";
 import { HeadTitle, HeadTitleForm } from "./components/titles";
 import { Linkregister, } from "./components/links";
-import Loginbutton from "./components/Loginbutton";
+import Loginbutton from "./components/LoginButton";
 import { ScreenType } from "../../App";
+import { useEffect, useState } from "react";
+import axios from 'axios';
+
+
+// definimos tipo da propiedades de los input
+type FormDataType = {
+    email: string,
+    password: string
+}
+
+// por defecto las propiedades estaran vacias
+const FormDataInit: FormDataType = {
+    email: '',
+    password: ''
+}
 
 //Definimos un componente que representa el login 
-function Loginform({ setScreenToShow }:
+function Loginform({ }:
     { setScreenToShow: (e: ScreenType) => void }
 ) {
+    // creamos un estado que alamcena las propiedades vacias
+    const [formData, setformData] = useState<FormDataType>(FormDataInit)
+    const [, setLoading] = useState<boolean>(false);
+
+
+    useEffect(() => {
+        console.log(formData);
+    }, [formData])
+
+    // definimos una funcion que va cambiando las propiedades por las nuevas ingresadas en los campos
+    const handleChange = (name: string, value: string) => {
+        setformData({
+            ...formData,
+            [name]: value
+        })
+    }
+
+    //envia los datos ala api
+    const handleSubmit = async () => {
+        setLoading(true)
+        console.log('Datos del formulario:', formData);
+        console.log('La función handleSubmit ha sido llamada');
+        try {
+            // este metodo envia el nuevo objeto al endpoint 
+            const response = await axios.post('http://localhost:3000/api/auth', formData)
+            if (!formData) {
+                console.log("datos vacios")
+            }
+            console.log('respuesta del servidor:', response.data)
+        } catch (error) {
+            console.error('error al iniciar sesion', error)
+        } finally {
+            setLoading(false)
+        }
+    }
 
 
     return (
@@ -24,9 +74,9 @@ function Loginform({ setScreenToShow }:
                     <HeadTitleForm />
                     <div className="grid gap-y-6">
                         {/* //Campo que nos permite ingreasar el correo */}
-                        <InputEmail />
+                        <InputEmail handleChange={handleChange} />
                         {/* //Campo que nos permite registrar la contraseña */}
-                        <InputPassword />
+                        <InputPassword handleChange={handleChange} />
                     </div>
                     <div className=" grid justify-items-start  mr-36">
                         {/* //Link que permite llevar una nueva pagina para registrarse */}
@@ -35,7 +85,7 @@ function Loginform({ setScreenToShow }:
                         <LinkForgotMyPassword />
                     </div>
                     {/* //subcomponente boton que nos permite validar datos ingresados  */}
-                    <Loginbutton setScreenToShow={setScreenToShow} />
+                    <Loginbutton handleSubmitForm={handleSubmit} />
                 </div>
             </div>
         </form>
