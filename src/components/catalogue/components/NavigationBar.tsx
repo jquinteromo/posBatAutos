@@ -1,5 +1,17 @@
+import { ScreenType } from "../../../App"
+
+
+type NavigationBarProps = {
+    setScreenToshow: (e: ScreenType) => void
+    onModal: () => void
+}
 // subcomponente barra de navegacion horizontal
-function NavigationBar({ onModal }: { onModal: () => void }) {
+function NavigationBar({ setScreenToshow, onModal }: NavigationBarProps) {
+
+    function openPrice() {
+        setScreenToshow("price")
+    }
+
 
     // funcion que nos permite abrr el modal
     function OnModal() {
@@ -12,10 +24,10 @@ function NavigationBar({ onModal }: { onModal: () => void }) {
 
             <ul className=" max-sm:space-x-3  flex space-x-28 ">
                 <li className="flex my-auto  mr-16">  <img className="w-52 h-24 max-sm:ml-20 max-sm:w-14 max-sm:h-16  " src="/src/icons/IconBatAutos.png"></img></li>
-
-                <div className="flex items-center gap-40 max-sm:gap-4   max-sm:text-xs ">
+                <div className="flex items-center gap-28 max-sm:gap-4   max-sm:text-xs ">
                     <li className="flex ">inicio</li>
                     <li className="flex ">Contacto</li>
+                    <li onClick={openPrice} className="flex ">Cotizar</li>
                     <li className="flex max-sm:w-24">Sobre Nosotros</li>
                     <li className=" max-sm:pr-3 pr-20 ">
                         <svg onClick={OnModal} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="absolute top-7 size-6 max-sm:right-2">

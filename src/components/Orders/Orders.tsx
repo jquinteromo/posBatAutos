@@ -7,16 +7,28 @@ function Orders() {
         { id: 10101010, date: "00/00/0000", state: "Reembolsado", billing: "Completa", Total: "$200.000" },
         { id: 10101010, date: "00/00/0000", state: "Pendiente de pago", billing: "Completa", Total: "$200.000" },
         { id: 10101010, date: "00/00/0000", state: "Completado", billing: "Completa", Total: "$200.000" },
-        { id: 10101010, date: "00/00/0000", state: "Completado", billing: "Completa", Total: "$200.000" },
-        { id: 10101010, date: "00/00/0000", state: "Completado", billing: "Completa", Total: "$200.000" },
-        { id: 10101010, date: "00/00/0000", state: "Completado", billing: "Completa", Total: "$200.000" },
-        { id: 10101010, date: "00/00/0000", state: "Completado", billing: "Completa", Total: "$200.000" },
-        { id: 10101010, date: "00/00/0000", state: "Completado", billing: "Completa", Total: "$200.000" },
-        { id: 10101010, date: "00/00/0000", state: "Completado", billing: "Completa", Total: "$200.000" },
-
-
     ]
 
+    let completados = 0
+    let cancelados = 0
+    let Reembolsado = 0
+    let PedienteDepago = 0
+
+    Pedidos.forEach((pedido) => {
+        if (pedido.state === "Completado") {
+            completados++;
+        } else if (pedido.state === "Cancelado") {
+            cancelados++;
+        } else if (pedido.state === "Reembolsado") {
+            Reembolsado++
+        } else if (pedido.state === "Pendiente de pago") {
+            PedienteDepago++
+        }
+    });
+
+    function removeOrder() {
+        alert("goku")
+    }
 
     return (
         // div almacena nuestra barra de busqueda y el titulo pedidos
@@ -43,11 +55,11 @@ function Orders() {
             {/* este div almacena nuestros filtros  */}
             <div className="flex flex-wrap items-center max-sm:text-[10px] h-14 w-full ">
                 <ul className="flex  flex-row gap-32 max-sm:gap-3">
-                    <li className="flex   ml-14 max-sm:ml-0 max-sm:pl-2 "> Todos<span className="ml-1 border-r-[1px] border-black pr-1 font-bold">1</span></li>
-                    <li className="flex  max-sm:pl-2"><span className="max-sm:hidden"><img className="h-5 w-5 mt-1 mr-1" src="/src/components/Orders/Icons-Orders/pendientepago.png" /></span> pendiente de pago<span className="font-bold ml-1  border-r-[1px] border-black pr-1">1</span></li>
-                    <li className="flex  max-sm:pl-2"><span className="max-sm:hidden"><img className="h-5 w-5 mt-1 mr-1" src="/src/icons/VerificationIcon.png" /></span> Completado<span className="font-bold ml-1 border-r-[1px] border-black pr-1">1</span></li>
-                    <li className="flex  max-sm:pl-2"><span className="max-sm:hidden"><img className="h-4 w-4 mt-1 mr-1" src="/src/components/Orders/Icons-Orders/Cancel.png" /></span> Cancelado<span className="font-bold ml-1 border-r-[1px] border-black pr-1">1</span></li>
-                    <li className="flex flex-wrap  max-sm:pl-2"><span className="max-sm:hidden"><img className="h-6 w-6 mr-1" src="/src/components/Orders/Icons-Orders/Reembolsado.png" /></span> Reembolsado<span className="font-bold ml-1 border-r-[1px] border-black pr-1">1</span></li>
+                    <li className="flex   ml-14 max-sm:ml-0 max-sm:pl-2 "> Todos<span className="ml-1 border-r-[1px] border-black pr-1 font-bold"></span></li>
+                    <li className="flex  max-sm:pl-2"><span className="max-sm:hidden"><img className="h-5 w-5 mt-1 mr-1" src="/src/components/Orders/Icons-Orders/pendientepago.png" /></span> pendiente de pago<span className="font-bold ml-1  border-r-[1px] border-black pr-1">{PedienteDepago}</span></li>
+                    <li className="flex  max-sm:pl-2"><span className="max-sm:hidden"><img className="h-5 w-5 mt-1 mr-1" src="/src/icons/VerificationIcon.png" /></span> Completado<span className="font-bold ml-1 border-r-[1px] border-black pr-1">{completados}</span></li>
+                    <li className="flex  max-sm:pl-2"><span className="max-sm:hidden"><img className="h-4 w-4 mt-1 mr-1" src="/src/components/Orders/Icons-Orders/Cancel.png" /></span> Cancelado<span className="font-bold ml-1 border-r-[1px] border-black pr-1">{cancelados}</span></li>
+                    <li className="flex flex-wrap  max-sm:pl-2"><span className="max-sm:hidden"><img className="h-6 w-6 mr-1" src="/src/components/Orders/Icons-Orders/Reembolsado.png" /></span> Reembolsado<span className="font-bold ml-1 border-r-[1px] border-black pr-1">{Reembolsado}</span></li>
                 </ul>
             </div>
 
@@ -98,7 +110,7 @@ function Orders() {
                                     {register.Total}
                                 </td>
                                 <td className="flex h-12 justify-center items-center ">
-                                    <img className="max-sm:h-4 max-sm:w-4 h-7  w-7" src="/src/components/Orders/Icons-Orders/eliminar.png" />
+                                    <img onClick={removeOrder} className="max-sm:h-4 max-sm:w-4 h-7  w-7" src="/src/components/Orders/Icons-Orders/eliminar.png" />
                                 </td>
                             </tr>
                         ))

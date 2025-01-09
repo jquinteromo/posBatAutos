@@ -4,11 +4,50 @@ import TarjetProduct from "./components/tarjetProduct";
 import { useState } from "react";
 import Modal from "./components/Modal";
 import { ScreenType } from "../../App";
+import AddedProduct from "./components/AddedProduct";
+import { useEffect } from "react";
+
+type Product = {
+    imgProduct: string;
+    descriptionProduct: string;
+    priceProduct: string;
+    discountproduct: string;
+};
+
+type DataProduct = {
+    setScreenToShow: (e: ScreenType) => void
+
+}
+
+
 
 // componente almacena las tarjetas de productos de un catalogo
 function Catalogue_Products({ setScreenToShow }:
-    { setScreenToShow: (e: ScreenType) => void }
+    DataProduct
 ) {
+
+
+
+    const [daproduct, setdataproduct] = useState<Product[]>([]);
+
+    const handleChildData = (product: Product | null) => {
+        if (product) {
+            console.log('Producto recibido:', product);
+            // Actualizamos el estado de 'daproduct' añadiendo el producto al arreglo
+            setdataproduct((prevProducts) => {
+                const updatedProducts = [...prevProducts, product];
+                console.log('Estado actualizado dentro de setdataproduct:', updatedProducts);
+                return updatedProducts;
+            });
+        }
+    };
+
+    // useEffect para monitorear el estado de 'daproduct'
+    useEffect(() => {
+        console.log('daproduct actualizado:', daproduct);
+    }, [daproduct]); // Se ejecuta cada vez que 'daproduct' cambia
+
+
 
     //cada estado genera un cambio sobre los subcomponentes del componente padre
     const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -54,16 +93,27 @@ function Catalogue_Products({ setScreenToShow }:
     ]
 
 
+
     return (
         <div className="">
-            <div className="flex justify-center w-full fixed h-10">
+
+            <div className="flex  justify-center w-full fixed h-10">
                 {/* Renderizamos subcomponente rendrizado "modal" */}
                 <Modal
+                    ChildComponent={
+                        <>
+                            {daproduct.map((proProduct, index) => (
+                                <AddedProduct key={index} selecProduct={proProduct} />
+                            ))}
+                        </>
+                    }
+
                     setScreenToShow={setScreenToShow}
                     closeModal={cerrarModal}
                     VisibilityModal={modalVisible}
 
                 />
+
 
             </div>
             {/* Renderizamos subcomponente renderizado navegacion de menu lateral */}
@@ -77,11 +127,13 @@ function Catalogue_Products({ setScreenToShow }:
             />
             {/* Renderizamos barra de navegacion horizontal */}
             <NavigationBar
+                setScreenToshow={setScreenToShow}
                 onModal={abrirModal} />
             <div className="ml-24 h-svh flex flex-row max-sm:grid max-sm:ml-20 grid-cols-2 max-sm:gap-1 gap-12 items-center pb-20 75">
                 {/* Renderizamos subcomponente tarjeta de producto y pasamos propiedades de la variable tajetProducts */}
                 {TarjetProducts.map((PropProduct) => (
                     <TarjetProduct
+                        sendDataProduct={handleChildData}
                         key={PropProduct.descriptionProduct}
                         imgProduct={PropProduct.imgProduct}
                         descriptionProduct={PropProduct.descriptionProduct}

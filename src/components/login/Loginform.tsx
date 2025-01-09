@@ -1,3 +1,8 @@
+// Para correr la api y el proyecto por favor ejecuta primero el proyecto y luego dirigete
+// a el archivo package.json y cambia type:commonjs a type:module y ahora si ejecuta la Api  
+// estoy en proceso para automatizar este Processor.
+
+
 import { LinkForgotMyPassword } from "./components/links"
 import { InputEmail, InputPassword } from "./components/inputsAutentication";
 import { HeadTitle, HeadTitleForm } from "./components/titles";
@@ -8,10 +13,15 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 
 
+
 // definimos tipo da propiedades de los input
 type FormDataType = {
     email: string,
     password: string
+}
+
+type LoginformProps = {
+    setScreenToShow: (e: ScreenType) => void
 }
 
 // por defecto las propiedades estaran vacias
@@ -20,9 +30,10 @@ const FormDataInit: FormDataType = {
     password: ''
 }
 
+
 //Definimos un componente que representa el login 
-function Loginform({ }:
-    { setScreenToShow: (e: ScreenType) => void }
+function Loginform({ setScreenToShow }: LoginformProps
+
 ) {
     // creamos un estado que alamcena las propiedades vacias
     const [formData, setformData] = useState<FormDataType>(FormDataInit)
@@ -41,8 +52,19 @@ function Loginform({ }:
         })
     }
 
+
     //envia los datos ala api
     const handleSubmit = async () => {
+
+        if (!formData.email || !formData.password) {
+            alert("por favor ingresa los datos")
+            return
+        } else {
+            setScreenToShow("catalogue")
+
+        }
+
+
         setLoading(true)
         console.log('Datos del formulario:', formData);
         console.log('La función handleSubmit ha sido llamada');

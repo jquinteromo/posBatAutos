@@ -1,7 +1,35 @@
+import { useState } from "react"
+import { useEffect } from "react"
+
+type Product = {
+    imgProduct: string
+    descriptionProduct: string
+    priceProduct: string
+    discountproduct: string
+
+}
 
 // subcomponetne tarjeta de producto define cada prducto
-function TarjetProduct({ imgProduct, descriptionProduct, priceProduct, discountproduct }:
-    { imgProduct: string, descriptionProduct: string, priceProduct: string, discountproduct: string }) {
+function TarjetProduct({ sendDataProduct, imgProduct, descriptionProduct, priceProduct, discountproduct }:
+    { sendDataProduct: (product: Product | null) => void, imgProduct: string, descriptionProduct: string, priceProduct: string, discountproduct: string }) {
+
+
+    const [selecProduct, setSelecProduct] = useState<Product | null>(null)
+
+    function handleProductClick(Producto: Product) {
+        setSelecProduct(Producto)
+
+    }
+
+    useEffect(() => {
+        if (selecProduct) {
+            sendDataProduct(selecProduct)
+            console.log(selecProduct)
+        }
+    }, [selecProduct])
+
+
+
 
     return (
         // contenido del producto como su imagen caracteristica etc
@@ -18,7 +46,7 @@ function TarjetProduct({ imgProduct, descriptionProduct, priceProduct, discountp
                     </div>
                     <div className="mt-2 text-sm text-lime-600 ">{discountproduct}</div>
                     <div className="flex justify-center max-sm:my-0  my-5">
-                        <button className="hover:bg-sky-700 rounded-xl bg-sky-400 h-7 max-sm:h-5 text-white text-sm max-sm:w-24 w-36 max-sm:text-xs max-sm:mr-4 max-sm:mt-3">Añadir al Carrito</button>
+                        <button onClick={() => handleProductClick({ imgProduct, descriptionProduct, priceProduct, discountproduct })} className="hover:bg-sky-700 rounded-xl bg-sky-400 h-7 max-sm:h-5 text-white text-sm max-sm:w-24 w-36 max-sm:text-xs max-sm:mr-4 max-sm:mt-3">Añadir al Carrito</button>
                     </div>
                 </div>
             </div>
